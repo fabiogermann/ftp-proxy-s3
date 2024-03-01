@@ -40,6 +40,11 @@ else
   exit 1
 fi
 
+if [ -z $STORAGE_CLASS ]; then
+  STORAGE_CLASS="standard"
+fi
+echo "Using STORAGE_CLASS: ${STORAGE_CLASS}"
+
 # Update the vsftpd.conf file to include the IP address if running on an EC2 instance
 # if curl -s http://instance-data.ec2.internal > /dev/null ; then
 #   IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
@@ -51,5 +56,12 @@ fi
 # start s3 fuse
 # Code above is not needed if the IAM role is attaced to EC2 instance
 # s3fs provides the iam_role option to grab those credentials automatically
-/usr/local/bin/s3fs $FTP_BUCKET /home/aws/s3bucket -o allow_other -o mp_umask="0022" -o iam_role="$IAM_ROLE" -o stat_cache_expire=600 #-d -d -f -o f2 -o curldbg
+/usr/local/bin/s3fs \
+$FTP_BUCKET \
+/home/aws/s3bucket \
+-o storage_class="${STORAGE_CLASS}"
+-o allow_other \
+-o mp_umask="0022" \
+-o iam_role="$IAM_ROLE" \
+-o stat_cache_expire=600 #-d -d -f -o f2 -o curldbg
 /usr/local/users.sh

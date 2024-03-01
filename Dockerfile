@@ -1,34 +1,16 @@
-FROM debian:stretch-slim
-LABEL maintainer="Diogo <info@diogoserrano.com>"
+FROM debian:bookworm-slim
 
 # Install needed packages and cleanup after
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
- automake \
- autotools-dev \
- g++ \
- git \
- libcurl4-gnutls-dev \
- libfuse-dev \
- libssl-dev \
- libxml2-dev \
- make \
- pkg-config \
  python3-pip \
  vsftpd \
  supervisor \
+ s3fs \
+ awscli \
  && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install -U setuptools pip
-
 # Run commands to set-up everything
-RUN pip3 install awscli && \
-  git clone https://github.com/s3fs-fuse/s3fs-fuse.git && \
-  cd s3fs-fuse && \
-  ./autogen.sh && \
-  ./configure  && \
-  make && \
-  make install && \
-  mkdir -p /home/aws/s3bucket/ && \
+RUN mkdir -p /home/aws/s3bucket/ && \
   echo "/usr/sbin/nologin" >> /etc/shells
 
 # Copy scripts to /usr/local
