@@ -1,10 +1,10 @@
 version: '3.8'
 services:
   s3-ftp-proxy:
-    image: ftp-proxy-s3:latest
-#    build: 
+    image: ghcr.io/fabiogermann/ftp-proxy-s3:master
+#    build:
 #      context: ./
-#       dockerfile: Dockerfile 
+#       dockerfile: Dockerfile
     ports:
       - "2121:21"
       - "30000-30100:30000-30100"
@@ -18,3 +18,5 @@ services:
 #      - IAM_ROLE=
     env_file:
       - .env
+    security_opt:
+      - apparmor:unconfined
