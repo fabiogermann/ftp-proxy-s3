@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  s3-ftp-proxy:
+    image: ftp-proxy-s3:latest
+#    build: 
+#      context: ./
+#       dockerfile: Dockerfile 
+    ports:
+      - "2121:21"
+      - "30000-30100:30000-30100"
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - "/dev/fuse:/dev/fuse"
+    environment:
+      - PASV_ADDRESS=0.0.0.0
+      - STORAGE_CLASS=deep_archive
+#      - IAM_ROLE=
+    env_file:
+      - .env

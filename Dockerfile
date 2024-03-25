@@ -14,7 +14,7 @@ RUN mkdir -p /home/aws/s3bucket/ && \
   echo "/usr/sbin/nologin" >> /etc/shells
 
 # Copy scripts to /usr/local
-COPY ["s3-fuse.sh", "users.sh", "add_users_in_container.sh", "/usr/local/"]
+COPY ["s3_fuse.sh", "users.sh", "/usr/local/"]
 
 # Copy needed config files to their destinations
 COPY vsftpd.conf /etc/vsftpd.conf
